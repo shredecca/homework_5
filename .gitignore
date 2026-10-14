@@ -1,0 +1,11 @@
+# ignore compiled binaries and object files
+
+slm 
+src/*.o
+*.o
+
+#ignore vs code
+.vscode/
+
+#ignore operating system files
+.DS_Store
