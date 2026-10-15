@@ -5,7 +5,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Iinclude_headers
 
 TARGET = slm
 
-SRCS = main_codes/main.cpp main_codes/model.cpp
+SRCS = main_codes/main.cpp main_codes/slm.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
