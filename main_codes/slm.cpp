@@ -44,7 +44,7 @@ void Slm::train(const std::string& filename){
 
             if(found_index == -1) {
                 k_gram new_record; 
-                new_record.k_gram = w; 
+                new_record.kgram = w; 
                 record.push_back(new_record);
                 found_index = record.size() -1; 
             }
@@ -89,11 +89,11 @@ void Slm::generate(int word_length) {
 
     cout << current_w; 
     int chars_output = k; 
-    vector<char> alpha_vec.size(); 
+    vector<char> alpha_vec(alphabet.begin(), alphabet.end()); 
 
     while (chars_output < word_length) {
         int found_idx =-1; 
-        for (size_t = 0; i <record.size(); i++) {
+        for (size_t i = 0; i <record.size(); i++) {
             if (record[i].kgram ==current_w) {
                 found_idx = i; 
                 break; 
