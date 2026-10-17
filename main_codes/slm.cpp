@@ -1,5 +1,6 @@
 //language model 
 #include "slm.h"
+#include <random> 
 
 using namespace std; 
 
@@ -70,7 +71,75 @@ void Slm::train(const std::string& filename){
 }
 
 void Slm::generate(int word_length) {
-    cout << word_length << '\n'; 
+    if (record.empty() || alphabet.empty() || word_length < k) {
+        return; 
+    }
+
+    random_device random_value; 
+    mt19937 gen(random_value()); 
+
+    vector<double> kgram_weight; 
+    for (size_t i = 0; i <record.size(); i++) {
+        kgram_weight.push_back(record[i].total_count); 
+    }
+    discrete_distribution<int> kgram_dist(kgram_weight.begin(), kgram_weight.end()); 
+
+    int start_index = kgram_dist(gen); 
+    string current_w = record[start_index].kgram; 
+
+    cout << current_w; 
+    int chars_output = k; 
+    vector<char> alpha_vec.size(); 
+
+    while (chars_output < word_length) {
+        int found_idx =-1; 
+        for (size_t = 0; i <record.size(); i++) {
+            if (record[i].kgram ==current_w) {
+                found_idx = i; 
+                break; 
+            }
+        }
+
+        vector<double> probs(alpha_vec.size(), 0.0); 
+        int n_w = 0; 
+        if (found_idx != -1) {
+            n_w = record[found_idx].total_count; 
+        } else {
+            n_w = 0; 
+        }
+        
+        for (size_t i = 0; i < alpha_vec.size(); i++) {
+            char c = alpha_vec[i]; 
+            int n_wc = 0;
+
+            if (found_idx != -1) {
+                const auto& trans = record[found_idx].transitions; 
+                for(size_t j= 0; j < trans.size(); j++) {
+                    if(trans[j].character == c) {
+                        n_wc = trans[j].count; 
+                        break;
+                    }
+                }
+            }
+
+            probs[i] = (n_wc +alpha) / (n_w + (alpha * alphabet.size())); 
+        }
+
+        if (alpha==0.0 && n_w == 0) {
+            break;
+        }
+
+        discrete_distribution<int> char_dist(probs.begin(), probs.end()); 
+        char next_c = alpha_vec[char_dist(gen)]; 
+
+        cout << next_c; 
+        chars_output++;
+
+        current_w = current_w.substr(1) + next_c; 
+    }
+
+cout << endl; 
+
 }
 
 
