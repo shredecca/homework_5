@@ -82,6 +82,16 @@ void Slm::generate(int word_length) {
     for (size_t i = 0; i <record.size(); i++) {
         kgram_weight.push_back(record[i].total_count); 
     }
+
+    double weight_sum = 0.0;
+    for (double w_val : kgram_weight) {
+        weight_sum += w_val;
+    }
+    if (weight_sum <= 0.0) {
+        cout << "Error: No valid k-gram weights found to start generation.\n";
+        return;
+    }
+
     discrete_distribution<int> kgram_dist(kgram_weight.begin(), kgram_weight.end()); 
 
     int start_index = kgram_dist(gen); 
@@ -127,6 +137,14 @@ void Slm::generate(int word_length) {
 
         if (alpha==0.0 && n_w == 0) {
             break;
+        }
+
+        double prob_sum = 0.0; 
+        for (double p : probs) {
+            prob_sum+= p; 
+        }
+        if (prob_sum <= 0.0) {
+            break; 
         }
 
         discrete_distribution<int> char_dist(probs.begin(), probs.end()); 
